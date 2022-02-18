@@ -5,10 +5,24 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: gaiaapp/gaia
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
+  
+runner:
+  image:
+    repository: gaiaapp/runner
+    pullPolicy: IfNotPresent
+    tag: "v2.3.0"
+
+database:
+  image:
+    repository: mongo
+    pullPolicy: IfNotPresent
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 27017
 
 imagePullSecrets: []
 nameOverride: ""
@@ -21,7 +35,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: "gaia"
 
 podAnnotations: {}
 
@@ -37,7 +51,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
