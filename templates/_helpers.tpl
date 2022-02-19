@@ -51,6 +51,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Database Selector labels
+*/}}
+{{- define "..databaseSelectorLabels" -}}
+app.kubernetes.io/name: {{ include "..name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: database
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "..serviceAccountName" -}}
