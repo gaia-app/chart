@@ -51,6 +51,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Gaia Selector labels
+*/}}
+{{- define "..gaiaSelectorLabels" -}}
+app.kubernetes.io/name: {{ include "..name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: gaia-app
+{{- end }}
+
+{{/*
 Database Selector labels
 */}}
 {{- define "..databaseSelectorLabels" -}}

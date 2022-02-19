@@ -10,7 +10,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "..selectorLabels" . | nindent 6 }}
+      {{- include "..gaiaSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "..selectorLabels" . | nindent 8 }}
+        {{- include "..gaiaSelectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -33,9 +33,16 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+           - name: GAIA_MONGODB_URI
+             value: "mongodb://gaia-database:27017/gaia"
+           - name: GAIA_RUNNER_API_PASSWORD
+             value: "1234"
+           - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_DATA_MONGODB
+             value: WARN
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
